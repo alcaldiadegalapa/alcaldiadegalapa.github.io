@@ -116,20 +116,23 @@
         boton.href = url;
 
         if (esMovil && esNavegadorIntegrado) {
-            mensaje.textContent = "Pulsa el botón para abrir el navegador y continuar al formulario.";
-            ayuda.textContent = "Si no se abre, usa el menú de Facebook y elige Abrir en el navegador.";
-            boton.textContent = "Abrir navegador";
+            if (/Android/i.test(agente)) {
+                mensaje.textContent = "Pulsa el botón para abrir Chrome y continuar al formulario.";
+                ayuda.textContent = "Si Chrome no se abre, usa el menú de Facebook y elige Abrir en el navegador.";
+                boton.textContent = "Abrir en Chrome";
 
-            boton.addEventListener("click", (evento) => {
-                evento.preventDefault();
-
-                if (/Android/i.test(agente)) {
+                boton.addEventListener("click", (evento) => {
+                    evento.preventDefault();
                     const paginaSinProtocolo = paginaActual.replace(/^https?:\/\//, "");
                     window.location.href = "intent://" + paginaSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
-                } else {
-                    window.open(paginaActual, "_blank");
-                }
-            });
+                });
+            } else {
+                mensaje.textContent = "Pulsa el botón para abrir el formulario.";
+                ayuda.textContent = "Para usar Safari o Chrome, abre el menú de Facebook y elige Abrir en el navegador.";
+                boton.textContent = "Abrir formulario";
+                boton.target = "_blank";
+                boton.rel = "noopener noreferrer";
+            }
         } else {
             boton.textContent = "Abrir formulario";
             setTimeout(() => {
