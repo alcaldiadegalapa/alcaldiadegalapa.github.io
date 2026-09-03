@@ -116,9 +116,9 @@
         boton.href = url;
 
         if (esMovil && esNavegadorIntegrado) {
-            mensaje.textContent = "Pulsa el botón para abrir Chrome y continuar al formulario.";
-            ayuda.textContent = "Si Chrome no se abre, vuelve a pulsar el botón.";
-            boton.textContent = "Abrir en Chrome";
+            mensaje.textContent = "Pulsa el botón para abrir el navegador y continuar al formulario.";
+            ayuda.textContent = "Si no se abre, usa el menú de Facebook y elige Abrir en el navegador.";
+            boton.textContent = "Abrir navegador";
 
             boton.addEventListener("click", (evento) => {
                 evento.preventDefault();
@@ -126,12 +126,6 @@
                 if (/Android/i.test(agente)) {
                     const paginaSinProtocolo = paginaActual.replace(/^https?:\/\//, "");
                     window.location.href = "intent://" + paginaSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
-                } else if (/iPhone|iPad|iPod/i.test(agente)) {
-                    const urlCodificada = encodeURIComponent(paginaActual);
-                    window.location.href = "googlechrome://navigate?url=" + urlCodificada;
-                    setTimeout(() => {
-                        window.location.href = paginaActual;
-                    }, 1200);
                 } else {
                     window.open(paginaActual, "_blank");
                 }
