@@ -13,10 +13,7 @@
         body {
             margin: 0;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 0;
             font-family: Arial, sans-serif;
             background: #eef3f7;
             color: #1f2937;
@@ -24,21 +21,14 @@
 
         .contenedor {
             width: 100%;
-            max-width: 440px;
+            min-height: 100vh;
             background: #ffffff;
-            padding: 35px 25px;
-            border-radius: 16px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .icono {
-            font-size: 48px;
-            margin-bottom: 15px;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 22px;
             margin-top: 0;
             margin-bottom: 12px;
         }
@@ -52,7 +42,7 @@
 
         .boton {
             display: inline-block;
-            width: 100%;
+            width: auto;
             padding: 14px 20px;
             background: #2563eb;
             color: white;
@@ -74,71 +64,51 @@
             color: #9ca3af;
         }
 
-        .cargando {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 18px;
-            border: 4px solid #dbeafe;
-            border-top-color: #2563eb;
-            border-radius: 50%;
-            animation: girar 0.9s linear infinite;
+        .formulario {
+            width: 100%;
+            max-width: 900px;
+            height: 75vh;
+            min-height: 560px;
+            margin: 20px auto 0;
+            border: 1px solid #dbe3ea;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
         }
 
-        @keyframes girar {
-            to { transform: rotate(360deg); }
+        iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
-        .oculto {
-            display: none;
+        @media (max-width: 600px) {
+            .contenedor {
+                padding: 16px 10px;
+            }
+
+            .formulario {
+                height: 78vh;
+                min-height: 500px;
+                margin-top: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <main class="contenedor" aria-live="polite">
-        <div class="cargando" aria-hidden="true"></div>
-        <h1>Abriendo el formulario</h1>
-        <p id="mensaje">Pulsa el botón para abrir el formulario en tu navegador.</p>
-        <a class="boton" id="boton" href="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec">Continuar</a>
-        <p class="ayuda" id="ayuda">Se abrirá Chrome para mostrar el formulario.</p>
+        <h1>Formulario Alcaldía de Galapa</h1>
+        <p>Completa el formulario directamente en esta página.</p>
+        <div class="formulario">
+            <iframe
+                src="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec"
+                title="Formulario Alcaldía de Galapa"
+                allow="clipboard-write">
+            </iframe>
+        </div>
+        <p class="ayuda">Si el formulario no carga dentro de Facebook, ábrelo directamente:</p>
+        <a class="boton" href="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec" target="_blank" rel="noopener noreferrer">Abrir formulario</a>
     </main>
-
-    <script>
-        const url = "https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec";
-        const paginaPublica = "https://alcaldiadegalapa.github.io/";
-        const agente = navigator.userAgent || "";
-        const esMovil = /Android|iPhone|iPad|iPod|Mobile/i.test(agente);
-        const esNavegadorIntegrado = /FBAN|FBAV|Instagram| Messenger/i.test(agente);
-        const mensaje = document.querySelector("#mensaje");
-        const ayuda = document.querySelector("#ayuda");
-
-        const boton = document.querySelector("#boton");
-        boton.href = url;
-
-        if (esMovil && esNavegadorIntegrado) {
-            if (/Android/i.test(agente)) {
-                mensaje.textContent = "Pulsa el botón para abrir Chrome y continuar al formulario.";
-                ayuda.textContent = "Si Chrome no se abre, usa el menú de Facebook y elige Abrir en el navegador.";
-                boton.textContent = "Abrir en Chrome";
-
-                boton.addEventListener("click", (evento) => {
-                    evento.preventDefault();
-                    const paginaSinProtocolo = paginaPublica.replace(/^https?:\/\//, "");
-                    window.location.href = "intent://" + paginaSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
-                });
-            } else {
-                mensaje.textContent = "Pulsa el botón para abrir el formulario.";
-                ayuda.textContent = "Para usar Safari o Chrome, abre el menú de Facebook y elige Abrir en el navegador.";
-                boton.textContent = "Abrir formulario";
-                boton.target = "_blank";
-                boton.rel = "noopener noreferrer";
-            }
-        } else {
-            boton.textContent = "Abrir formulario";
-            setTimeout(() => {
-                window.location.href = url;
-            }, 700);
-        }
-    </script>
-
 </body>
 </html>
