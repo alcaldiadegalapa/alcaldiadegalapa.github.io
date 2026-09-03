@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abrir en el navegador</title>
+    <title>Formulario Alcaldía de Galapa</title>
 
     <style>
         * {
@@ -18,13 +18,13 @@
             justify-content: center;
             padding: 20px;
             font-family: Arial, sans-serif;
-            background: #f5f7f9;
+            background: #eef3f7;
             color: #1f2937;
         }
 
         .contenedor {
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
             background: #ffffff;
             padding: 35px 25px;
             border-radius: 16px;
@@ -39,6 +39,7 @@
 
         h1 {
             font-size: 24px;
+            margin-top: 0;
             margin-bottom: 12px;
         }
 
@@ -72,43 +73,59 @@
             font-size: 13px;
             color: #9ca3af;
         }
+
+        .cargando {
+            width: 42px;
+            height: 42px;
+            margin: 0 auto 18px;
+            border: 4px solid #dbeafe;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: girar 0.9s linear infinite;
+        }
+
+        @keyframes girar {
+            to { transform: rotate(360deg); }
+        }
+
+        .oculto {
+            display: none;
+        }
     </style>
 </head>
 <body>
-
+    <main class="contenedor" aria-live="polite">
+        <div class="cargando" aria-hidden="true"></div>
+        <h1>Abriendo el formulario</h1>
+        <p id="mensaje">Estamos preparando el formulario. Si no se abre automáticamente, pulsa el botón.</p>
+        <a class="boton" id="boton" href="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec">Abrir formulario</a>
+        <p class="ayuda" id="ayuda">La página permanecerá visible mientras se realiza la apertura.</p>
+    </main>
 
     <script>
-        // URL que quieres abrir
         const url = "https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec";
+        const agente = navigator.userAgent || "";
+        const esMovil = /Android|iPhone|iPad|iPod|Mobile/i.test(agente);
+        const esNavegadorIntegrado = /FBAN|FBAV|Instagram| Messenger/i.test(agente);
+        const mensaje = document.querySelector("#mensaje");
+        const ayuda = document.querySelector("#ayuda");
 
-        // Detectar si el usuario está en Android
-        const esAndroid = /Android/i.test(navigator.userAgent);
+        document.querySelector("#boton").href = url;
 
-        // Detectar si está dentro de Facebook
-        const esFacebook = /FBAN|FBAV|Instagram/i.test(navigator.userAgent);
+        if (esMovil && esNavegadorIntegrado) {
+            mensaje.textContent = "Para ver el formulario correctamente, se abrirá en el navegador de tu teléfono.";
+            ayuda.textContent = "Si no se abre, pulsa Abrir formulario.";
 
-        // Intentar abrir Chrome en Android
-        if (esAndroid && esFacebook) {
-
-            const urlSinProtocolo = url.replace(/^https?:\/\//, "");
-
-            const intentUrl =
-                "intent://" + urlSinProtocolo +
-                "#Intent;scheme=https;package=com.android.chrome;end";
-
-            window.location.href = intentUrl;
-
-            // Si no funciona, mostrar el botón
-            setTimeout(() => {
-                document.querySelector(".ayuda").textContent =
-                    "Si no se abrió, pulsa el botón para continuar.";
-            }, 2000);
-
+            if (/Android/i.test(agente)) {
+                const urlSinProtocolo = url.replace(/^https?:\/\//, "");
+                window.location.href = "intent://" + urlSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
+            } else {
+                window.open(url, "_blank");
+            }
         } else {
-            // En otros dispositivos, abrir normalmente
             setTimeout(() => {
                 window.location.href = url;
-            }, 500);
+            }, 700);
         }
     </script>
 
