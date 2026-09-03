@@ -98,7 +98,7 @@
         <div class="cargando" aria-hidden="true"></div>
         <h1>Abriendo el formulario</h1>
         <p id="mensaje">Estamos preparando el formulario. Si no se abre automáticamente, pulsa el botón.</p>
-        <a class="boton" id="boton" href="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec">Abrir formulario</a>
+        <a class="boton" id="boton" href="https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec">Continuar</a>
         <p class="ayuda" id="ayuda">La página permanecerá visible mientras se realiza la apertura.</p>
     </main>
 
@@ -110,19 +110,26 @@
         const mensaje = document.querySelector("#mensaje");
         const ayuda = document.querySelector("#ayuda");
 
-        document.querySelector("#boton").href = url;
+        const boton = document.querySelector("#boton");
+        const paginaActual = window.location.href.split("#")[0];
+
+        boton.href = url;
 
         if (esMovil && esNavegadorIntegrado) {
-            mensaje.textContent = "Para ver el formulario correctamente, se abrirá en el navegador de tu teléfono.";
-            ayuda.textContent = "Si no se abre, pulsa Abrir formulario.";
+            mensaje.textContent = "Abriendo el navegador de tu teléfono para mostrar el formulario.";
+            ayuda.textContent = "Si no se abre, pulsa Continuar.";
+            boton.textContent = "Abrir navegador";
 
             if (/Android/i.test(agente)) {
-                const urlSinProtocolo = url.replace(/^https?:\/\//, "");
-                window.location.href = "intent://" + urlSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
+                const paginaSinProtocolo = paginaActual.replace(/^https?:\/\//, "");
+                boton.href = "intent://" + paginaSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
+                window.location.href = boton.href;
             } else {
-                window.open(url, "_blank");
+                boton.href = paginaActual;
+                window.open(paginaActual, "_blank");
             }
         } else {
+            boton.textContent = "Abrir formulario";
             setTimeout(() => {
                 window.location.href = url;
             }, 700);
