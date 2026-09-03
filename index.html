@@ -104,6 +104,7 @@
 
     <script>
         const url = "https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec";
+        const paginaPublica = "https://alcaldiadegalapa.github.io/";
         const agente = navigator.userAgent || "";
         const esMovil = /Android|iPhone|iPad|iPod|Mobile/i.test(agente);
         const esNavegadorIntegrado = /FBAN|FBAV|Instagram| Messenger/i.test(agente);
@@ -111,8 +112,6 @@
         const ayuda = document.querySelector("#ayuda");
 
         const boton = document.querySelector("#boton");
-        const paginaActual = window.location.href.split("#")[0];
-
         boton.href = url;
 
         if (esMovil && esNavegadorIntegrado) {
@@ -123,7 +122,7 @@
 
                 boton.addEventListener("click", (evento) => {
                     evento.preventDefault();
-                    const paginaSinProtocolo = paginaActual.replace(/^https?:\/\//, "");
+                    const paginaSinProtocolo = paginaPublica.replace(/^https?:\/\//, "");
                     window.location.href = "intent://" + paginaSinProtocolo + "#Intent;scheme=https;package=com.android.chrome;end";
                 });
             } else {
