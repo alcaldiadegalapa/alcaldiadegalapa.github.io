@@ -1,0 +1,145 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abrir en el navegador</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f7f9;
+            color: #1f2937;
+        }
+
+        .contenedor {
+            width: 100%;
+            max-width: 400px;
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .icono {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .boton {
+            display: inline-block;
+            width: 100%;
+            padding: 14px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .boton:hover {
+            background: #1d4ed8;
+        }
+
+        .ayuda {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <div class="icono">🌐</div>
+
+        <h1>Abriendo la página</h1>
+
+        <p>
+            Estamos intentando abrir esta página en tu navegador.
+            Si no se abre automáticamente, pulsa el botón.
+        </p>
+
+        <a
+            id="botonAbrir"
+            class="boton"
+            href="TU_URL_AQUI"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Abrir en el navegador
+        </a>
+
+        <div class="ayuda">
+            Si estás dentro de Facebook, es posible que debas
+            permitir abrir el enlace en otra aplicación.
+        </div>
+
+    </div>
+
+    <script>
+        // URL que quieres abrir
+        const url = "https://script.google.com/macros/s/AKfycbweAXK6QDYUU-f9lfFf8KVNLs4ZK6vEx652AQMyrVQwQ2g9Vya5bwDHx-tqIY6_JKFN/exec";
+
+        // Detectar si el usuario está en Android
+        const esAndroid = /Android/i.test(navigator.userAgent);
+
+        // Detectar si está dentro de Facebook
+        const esFacebook = /FBAN|FBAV|Instagram/i.test(navigator.userAgent);
+
+        // Intentar abrir Chrome en Android
+        if (esAndroid && esFacebook) {
+
+            const urlSinProtocolo = url.replace(/^https?:\/\//, "");
+
+            const intentUrl =
+                "intent://" + urlSinProtocolo +
+                "#Intent;scheme=https;package=com.android.chrome;end";
+
+            window.location.href = intentUrl;
+
+            // Si no funciona, mostrar el botón
+            setTimeout(() => {
+                document.querySelector(".ayuda").textContent =
+                    "Si no se abrió, pulsa el botón para continuar.";
+            }, 2000);
+
+        } else {
+            // En otros dispositivos, abrir normalmente
+            setTimeout(() => {
+                window.location.href = url;
+            }, 500);
+        }
+    </script>
+
+</body>
+</html>
+```
